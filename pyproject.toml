@@ -6,5 +6,16 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
 	"ruff",
-	"pydantic"
+	"pydantic",
+	"google-genai",
+	"python-dotenv"
 ]
+[tool.ruff]
+# Enable standard linting rules (E, F) + imports (I)
+select = ["E", "F", "I"]
+line-length = 88
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
