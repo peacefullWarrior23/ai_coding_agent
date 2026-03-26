@@ -14,8 +14,8 @@ dependencies = [
 # Enable standard linting rules (E, F) + imports (I)
 select = ["E", "F", "I"]
 line-length = 88
+ignore=["E501"]
 
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
-
