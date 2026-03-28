@@ -2,6 +2,8 @@ import os
 import subprocess
 
 from google.genai import types
+from openai.types.chat import ChatCompletionToolParam
+from pydantic import BaseModel, Field
 
 
 def run_python_file(working_dir, python_file: str, args=[]):
@@ -55,8 +57,27 @@ schema_run_python_file = types.FunctionDeclaration(
                 description="An optional array of strings to be used as arguments for the python file run",
                 items=types.Schema(
                     type=types.Type.STRING,
-                )
+                ),
             ),
         },
     ),
 )
+
+
+class RunPythonFile(BaseModel):
+    python_file: str = Field(
+        description="Path to the python file relative to the working directory."
+    )
+    args: list[str] = Field(
+        description="An optional array of strings to be used as arguments for the python file run"
+    )
+
+
+tool_run_python_file: ChatCompletionToolParam = {
+    "type": "function",
+    "function": {
+        "name": "run_python_file",
+        "description": "Runs the given python file witht the python3 interpreter and returns the response.The function also accepts additional CLI arguments as optional array and passes them on to the python file run process. If accessing or running the file fails, it prints out 'Error : ' followed by the error details",
+        "parameters": RunPythonFile.model_json_schema(),
+    },
+}

@@ -1,6 +1,8 @@
 import os
 
 from google.genai import types
+from openai.types.chat import ChatCompletionToolParam
+from pydantic import BaseModel, Field
 
 MAX_CHARS = 10000
 
@@ -35,3 +37,15 @@ schema_get_file_content = types.FunctionDeclaration(
         },
     ),
 )
+
+class GetFileContent(BaseModel):
+    file_path: str = Field(description="Path to the file relative to the working directory")
+
+tool_get_file_content: ChatCompletionToolParam = {
+    "type": "function",
+    "function": {
+        "name": "get_file_content",
+        "description" : "Provides the file content as a string upto 10000 characters. If reading or accessing the file fails, it prints out 'Error : ' followed by the error details",
+        "parameters" : GetFileContent.model_json_schema(),
+    }
+}

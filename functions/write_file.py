@@ -1,6 +1,8 @@
 import os
 
 from google.genai import types
+from openai.types.chat import ChatCompletionToolParam
+from pydantic import BaseModel, Field
 
 
 def write_file(working_dir, file_path, content):
@@ -44,3 +46,22 @@ schema_write_file = types.FunctionDeclaration(
         },
     ),
 )
+
+
+class WriteFile(BaseModel):
+    file_path: str = Field(
+        description="Path to the file which is to be written to, relative to the working directory."
+    )
+    content: str = Field(
+        description="The string content which will be written to the file."
+    )
+
+
+tool_write_file: ChatCompletionToolParam = {
+    "type": "function",
+    "function": {
+        "name": "write_file",
+        "description": "Writes the provided string content to the given file. Any existing text in the file will be replaced with the provided content.If the file does not exist it will be created along with parent directory, before it is written to. If accessing or running the file fails, it prints out 'Error : ' followed by the error details",
+        "parameters": WriteFile.model_json_schema(),
+    },
+}
