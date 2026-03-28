@@ -23,7 +23,11 @@ system_prompt = (
     - List files and directories
     - Read the contents of a file
     - Write content to a file
-    - Run a python file with optional arguments
+    - Run a python file with optional arguments.
+
+    When the user asks a question about the project's code they are referring to the working directory. 
+    So typically start by looking at the files in the project, then figure out how to run the project and project's tests.
+    Validte that the project's tests pass to ensure the project behavior is correct.
     All paths you provide should be relative to the working folder. You do not need to specify the working folder as it will be automatically injected for security reasons.
     """
 )
